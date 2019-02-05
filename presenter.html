@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+    <script src="./logic.js"></script>
+    <script>
+      window.onload = function() {
+        var logic = new ProductOperations();
+        // get all products and generate table
+        generateTable(logic.getProducts());
+
+        // function to generate table based on products
+        function generateTable(products) {
+          var tr = "";
+          for (var i = 0; i < products.length; i++) {
+            tr += `<tr><td>${products[i].ProductId}</td><td>${
+              products[i].ProductName
+            }</td><td>${products[i].Price}</td><td>${
+              products[i].CategoryName
+            }</td><td>${products[i].Manufacturer}</td></tr>`;
+          }
+
+          document.getElementById("tbody").innerHTML = tr;
+        }
+        document.getElementById("btnnew").addEventListener(
+          "click",
+          function() {
+            document.getElementById("ProductId").value = 0;
+            document.getElementById("ProductName").value = "";
+            document.getElementById("Price").value = 0;
+            document.getElementById("CategoryName").value = "";
+            document.getElementById("Manufacturer").value = "";
+          },
+          false
+        );
+
+        document.getElementById("btnsave").addEventListener(
+          "click",
+          function() {
+            var product = new Product(0, "", 0, "", "");
+            // reading data from UI and storing into the product Object
+            product.ProductId = document.getElementById("ProductId").value;
+            product.ProductName = document.getElementById("ProductName").value;
+            product.Price = document.getElementById("Price").value;
+            product.CategoryName = document.getElementById(
+              "CategoryName"
+            ).value;
+            product.Manufacturer = document.getElementById(
+              "Manufacturer"
+            ).value;
+            // call the addProduct()  and pass product object
+            var products = logic.addProduct(product);
+            // generate table based on added product
+            generateTable(products);
+          },
+          false
+        );
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <label for="ProductId">ProductId</label>
+        <input type="text" id="ProductId" />
+      </div>
+      <div>
+        <label for="ProductName">ProductName</label>
+        <input type="text" id="ProductName" />
+      </div>
+      <div>
+        <label for="Price">Price</label>
+        <input type="text" id="Price" />
+      </div>
+      <div>
+        <label for="CategoryName">CategoryName</label>
+        <input type="text" id="CategoryName" />
+      </div>
+      <div>
+        <label for="Manufacturer">Manufacturer</label>
+        <input type="text" id="Manufacturer" />
+      </div>
+      <div>
+        <table>
+          <tr>
+            <td>
+              <input type="button" id="btnnew" value="New" />
+            </td>
+            <td>
+              <input type="button" id="btnsave" value="Save" />
+            </td>
+          </tr>
+        </table>
+      </div>
+      <hr />
+      <table>
+        <thead>
+          <tr>
+            <th>ProductId</th>
+            <th>ProductName</th>
+            <th>Price</th>
+            <th>CategoryName</th>
+            <th>Manufacturer</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </body>
+</html>
